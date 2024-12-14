@@ -1,4 +1,5 @@
 import {belongsTo, Entity, model, property} from '@loopback/repository';
+import {Equipo} from './equipo.model';
 import {Estadio} from './estadio.model';
 import {Torneo} from './torneo.model';
 
@@ -68,10 +69,11 @@ export class Partido extends Entity {
   @belongsTo(() => Estadio, {name: 'estadio'})
   idEstadio: number;
 
-  @property({
-    type: 'number',
-  })
-  idEquipo?: number;
+  @belongsTo(() => Equipo, {name: 'equipoLocal'})
+  idEquipoLocal: number;
+
+  @belongsTo(() => Equipo, {name: 'equipoVisitante'})
+  idEquipoVisitante: number;
 
 
   constructor(data?: Partial<Partido>) {

@@ -1,13 +1,13 @@
-import {inject, Getter} from '@loopback/core';
-import {DefaultCrudRepository, repository, HasManyThroughRepositoryFactory, BelongsToAccessor, HasManyRepositoryFactory} from '@loopback/repository';
+import {Getter, inject} from '@loopback/core';
+import {BelongsToAccessor, DefaultCrudRepository, HasManyRepositoryFactory, HasManyThroughRepositoryFactory, repository} from '@loopback/repository';
 import {OraplaysqlDataSource} from '../datasources';
-import {Equipo, EquipoRelations, Jugador, Contratacion, Tecnico, Torneo, Participacion, Partido} from '../models';
+import {Contratacion, Equipo, EquipoRelations, Jugador, Participacion, Partido, Tecnico, Torneo} from '../models';
 import {ContratacionRepository} from './contratacion.repository';
 import {JugadorRepository} from './jugador.repository';
-import {TecnicoRepository} from './tecnico.repository';
 import {ParticipacionRepository} from './participacion.repository';
-import {TorneoRepository} from './torneo.repository';
 import {PartidoRepository} from './partido.repository';
+import {TecnicoRepository} from './tecnico.repository';
+import {TorneoRepository} from './torneo.repository';
 
 export class EquipoRepository extends DefaultCrudRepository<
   Equipo,
