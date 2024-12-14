@@ -30,14 +30,20 @@ export class Partido extends Entity {
   golesEquipoVisitante: number;
 
   @property({
-    type: 'date',
+    type: 'string',
     required: true,
+    jsonSchema: {
+      format: 'date-time',
+    },
   })
   fechaInicio: string;
 
   @property({
-    type: 'date',
+    type: 'string',
     required: true,
+    jsonSchema: {
+      format: 'date-time',
+    },
   })
   fechaFin: string;
 
@@ -96,6 +102,17 @@ export class Partido extends Entity {
   })
   estadioId?: number;
 
+  // Agregar hora con minutos de inicio y fin
+  @property({
+    type: 'string',
+  })
+  horaInicio?: string;
+
+  @property({
+    type: 'string',
+  })
+  horaFin?: string;
+
   @hasMany(() => ApuestaEvento)
   apuestasEvento: ApuestaEvento[];
 
@@ -109,6 +126,7 @@ export class Partido extends Entity {
     super(data);
   }
 }
+
 
 export interface PartidoRelations {
   // describe navigational properties here
