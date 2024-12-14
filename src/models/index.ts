@@ -10,3 +10,9 @@ export * from './tecnico.model';
 export * from './torneo.model';
 export * from './usuario.model';
 
+export * from './metodo-pago.model';
+export * from './transaccion.model';
+export * from './apuesta-jugador.model';
+export * from './apuesta-marcador.model';
+export * from './apuesta-evento.model';
+export * from './partido.model';
