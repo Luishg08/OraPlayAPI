@@ -33,7 +33,6 @@ export class Tecnico extends Entity {
   })
   cantidadTitulos: number;
 
-
   constructor(data?: Partial<Tecnico>) {
     super(data);
   }

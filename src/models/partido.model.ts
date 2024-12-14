@@ -1,6 +1,11 @@
-import {belongsTo, Entity, model, property} from '@loopback/repository';
+import {belongsTo, Entity, hasMany, model, property} from '@loopback/repository';
+import {ApuestaEvento} from './apuesta-evento.model';
+import {ApuestaJugador} from './apuesta-jugador.model';
+import {ApuestaMarcador} from './apuesta-marcador.model';
 import {Equipo} from './equipo.model';
 import {Estadio} from './estadio.model';
+import {Estadistica} from './estadistica.model';
+import {Evento} from './evento.model';
 import {Torneo} from './torneo.model';
 
 @model()
@@ -69,12 +74,36 @@ export class Partido extends Entity {
   @belongsTo(() => Estadio, {name: 'estadio'})
   idEstadio: number;
 
+  @hasMany(() => Evento)
+  eventos: Evento[];
+
+  @hasMany(() => Estadistica)
+  estadisticas: Estadistica[];
+
   @belongsTo(() => Equipo, {name: 'equipoLocal'})
-  idEquipoLocal: number;
+  equipoLocalId: number;
 
   @belongsTo(() => Equipo, {name: 'equipoVisitante'})
-  idEquipoVisitante: number;
+  equipoVisitanteId: number;
 
+  @property({
+    type: 'number',
+  })
+  torneoId?: number;
+
+  @property({
+    type: 'number',
+  })
+  estadioId?: number;
+
+  @hasMany(() => ApuestaEvento)
+  apuestasEvento: ApuestaEvento[];
+
+  @hasMany(() => ApuestaMarcador)
+  apuestasMarcador: ApuestaMarcador[];
+
+  @hasMany(() => ApuestaJugador)
+  apuestasJugador: ApuestaJugador[];
 
   constructor(data?: Partial<Partido>) {
     super(data);

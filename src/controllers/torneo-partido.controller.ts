@@ -16,20 +16,20 @@ import {
   requestBody,
 } from '@loopback/rest';
 import {
-  Equipo,
+  Torneo,
   Partido,
 } from '../models';
-import {EquipoRepository} from '../repositories';
+import {TorneoRepository} from '../repositories';
 
-export class EquipoPartidoController {
+export class TorneoPartidoController {
   constructor(
-    @repository(EquipoRepository) protected equipoRepository: EquipoRepository,
+    @repository(TorneoRepository) protected torneoRepository: TorneoRepository,
   ) { }
 
-  @get('/equipos/{id}/partidos', {
+  @get('/torneos/{id}/partidos', {
     responses: {
       '200': {
-        description: 'Array of Equipo has many Partido',
+        description: 'Array of Torneo has many Partido',
         content: {
           'application/json': {
             schema: {type: 'array', items: getModelSchemaRef(Partido)},
@@ -42,38 +42,38 @@ export class EquipoPartidoController {
     @param.path.number('id') id: number,
     @param.query.object('filter') filter?: Filter<Partido>,
   ): Promise<Partido[]> {
-    return this.equipoRepository.partidos(id).find(filter);
+    return this.torneoRepository.partidos(id).find(filter);
   }
 
-  @post('/equipos/{id}/partidos', {
+  @post('/torneos/{id}/partidos', {
     responses: {
       '200': {
-        description: 'Equipo model instance',
+        description: 'Torneo model instance',
         content: {'application/json': {schema: getModelSchemaRef(Partido)}},
       },
     },
   })
   async create(
-    @param.path.number('id') id: typeof Equipo.prototype.idEquipo,
+    @param.path.number('id') id: typeof Torneo.prototype.idTorneo,
     @requestBody({
       content: {
         'application/json': {
           schema: getModelSchemaRef(Partido, {
-            title: 'NewPartidoInEquipo',
+            title: 'NewPartidoInTorneo',
             exclude: ['idPartido'],
-            optional: ['idEquipo']
+            optional: ['torneoId']
           }),
         },
       },
     }) partido: Omit<Partido, 'idPartido'>,
   ): Promise<Partido> {
-    return this.equipoRepository.partidos(id).create(partido);
+    return this.torneoRepository.partidos(id).create(partido);
   }
 
-  @patch('/equipos/{id}/partidos', {
+  @patch('/torneos/{id}/partidos', {
     responses: {
       '200': {
-        description: 'Equipo.Partido PATCH success count',
+        description: 'Torneo.Partido PATCH success count',
         content: {'application/json': {schema: CountSchema}},
       },
     },
@@ -90,13 +90,13 @@ export class EquipoPartidoController {
     partido: Partial<Partido>,
     @param.query.object('where', getWhereSchemaFor(Partido)) where?: Where<Partido>,
   ): Promise<Count> {
-    return this.equipoRepository.partidos(id).patch(partido, where);
+    return this.torneoRepository.partidos(id).patch(partido, where);
   }
 
-  @del('/equipos/{id}/partidos', {
+  @del('/torneos/{id}/partidos', {
     responses: {
       '200': {
-        description: 'Equipo.Partido DELETE success count',
+        description: 'Torneo.Partido DELETE success count',
         content: {'application/json': {schema: CountSchema}},
       },
     },
@@ -105,6 +105,6 @@ export class EquipoPartidoController {
     @param.path.number('id') id: number,
     @param.query.object('where', getWhereSchemaFor(Partido)) where?: Where<Partido>,
   ): Promise<Count> {
-    return this.equipoRepository.partidos(id).delete(where);
+    return this.torneoRepository.partidos(id).delete(where);
   }
 }

@@ -1,4 +1,8 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {Usuario} from './usuario.model';
+import {Partido} from './partido.model';
+import {Evento} from './evento.model';
+import {Equipo} from './equipo.model';
 
 @model()
 export class ApuestaEvento extends Entity {
@@ -21,6 +25,17 @@ export class ApuestaEvento extends Entity {
   })
   posibleGanancia: number;
 
+  @belongsTo(() => Usuario)
+  usuarioId: number;
+
+  @belongsTo(() => Partido)
+  partidoId: number;
+
+  @belongsTo(() => Evento)
+  eventoId: number;
+
+  @belongsTo(() => Equipo)
+  equipoId: number;
 
   constructor(data?: Partial<ApuestaEvento>) {
     super(data);

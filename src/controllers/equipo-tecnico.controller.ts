@@ -33,6 +33,6 @@ export class EquipoTecnicoController {
   async getTecnico(
     @param.path.number('id') id: typeof Equipo.prototype.idEquipo,
   ): Promise<Tecnico> {
-    return this.equipoRepository.tenico(id);
+    return this.equipoRepository.tecnico(id);
   }
 }
