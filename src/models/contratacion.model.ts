@@ -27,6 +27,15 @@ export class Contratacion extends Entity {
   })
   cantidadGoles: number;
 
+  @property({
+    type: 'number',
+  })
+  idJugador?: number;
+
+  @property({
+    type: 'number',
+  })
+  idEquipo?: number;
 
   constructor(data?: Partial<Contratacion>) {
     super(data);

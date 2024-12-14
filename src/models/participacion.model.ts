@@ -9,6 +9,15 @@ export class Participacion extends Entity {
   })
   idTorneoidEquipo?: number;
 
+  @property({
+    type: 'number',
+  })
+  idTorneo?: number;
+
+  @property({
+    type: 'number',
+  })
+  idEquipo?: number;
 
   constructor(data?: Partial<Participacion>) {
     super(data);

@@ -1,4 +1,3 @@
-export * from './lucho.repository';
 export * from './apuesta-evento.repository';
 export * from './apuesta-jugador.repository';
 export * from './apuesta-marcador.repository';
@@ -16,3 +15,4 @@ export * from './tecnico.repository';
 export * from './torneo.repository';
 export * from './transaccion.repository';
 export * from './usuario.repository';
+
