@@ -52,3 +52,4 @@ export interface ApuestaJugadorRelations {
 }
 
 export type ApuestaJugadorWithRelations = ApuestaJugador & ApuestaJugadorRelations;
+

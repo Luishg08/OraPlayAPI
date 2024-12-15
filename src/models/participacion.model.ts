@@ -5,17 +5,12 @@ export class Participacion extends Entity {
   @property({
     type: 'number',
     id: true,
-    generated: true,
-  })
-  idTorneoidEquipo?: number;
-
-  @property({
-    type: 'number',
   })
   idTorneo?: number;
 
   @property({
     type: 'number',
+    id : true
   })
   idEquipo?: number;
 
@@ -29,3 +24,4 @@ export interface ParticipacionRelations {
 }
 
 export type ParticipacionWithRelations = Participacion & ParticipacionRelations;
+

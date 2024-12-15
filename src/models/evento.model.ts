@@ -1,6 +1,7 @@
 import {Entity, model, property, belongsTo, hasMany} from '@loopback/repository';
 import {Partido} from './partido.model';
 import {ApuestaEvento} from './apuesta-evento.model';
+import {Equipo} from './equipo.model';
 
 @model()
 export class Evento extends Entity {
@@ -29,6 +30,9 @@ export class Evento extends Entity {
   @hasMany(() => ApuestaEvento)
   apuestasEvento: ApuestaEvento[];
 
+  @belongsTo(() => Equipo)
+  equipoId: number;
+
   constructor(data?: Partial<Evento>) {
     super(data);
   }
@@ -39,3 +43,5 @@ export interface EventoRelations {
 }
 
 export type EventoWithRelations = Evento & EventoRelations;
+
+

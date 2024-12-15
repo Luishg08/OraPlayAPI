@@ -47,3 +47,6 @@ export interface ContratacionRelations {
 }
 
 export type ContratacionWithRelations = Contratacion & ContratacionRelations;
+
+
+

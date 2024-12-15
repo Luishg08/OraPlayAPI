@@ -16,8 +16,8 @@ import {
   requestBody,
 } from '@loopback/rest';
 import {
-  Torneo,
   Partido,
+  Torneo,
 } from '../models';
 import {TorneoRepository} from '../repositories';
 
@@ -60,8 +60,7 @@ export class TorneoPartidoController {
         'application/json': {
           schema: getModelSchemaRef(Partido, {
             title: 'NewPartidoInTorneo',
-            exclude: ['idPartido'],
-            optional: ['torneoId']
+            exclude: ['idPartido']
           }),
         },
       },

@@ -1,8 +1,8 @@
-import {Entity, model, property, belongsTo} from '@loopback/repository';
-import {Usuario} from './usuario.model';
-import {Partido} from './partido.model';
-import {Evento} from './evento.model';
+import {belongsTo, Entity, model, property} from '@loopback/repository';
 import {Equipo} from './equipo.model';
+import {Evento} from './evento.model';
+import {Partido} from './partido.model';
+import {Usuario} from './usuario.model';
 
 @model()
 export class ApuestaEvento extends Entity {
@@ -47,3 +47,7 @@ export interface ApuestaEventoRelations {
 }
 
 export type ApuestaEventoWithRelations = ApuestaEvento & ApuestaEventoRelations;
+
+
+
+

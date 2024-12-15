@@ -60,8 +60,7 @@ export class EstadioPartidoController {
         'application/json': {
           schema: getModelSchemaRef(Partido, {
             title: 'NewPartidoInEstadio',
-            exclude: ['idPartido'],
-            optional: ['estadioId']
+            exclude: ['idPartido']
           }),
         },
       },

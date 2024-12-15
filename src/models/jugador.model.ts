@@ -1,7 +1,8 @@
-import {Entity, model, property, hasMany} from '@loopback/repository';
-import {Equipo} from './equipo.model';
-import {Contratacion} from './contratacion.model';
+import {Entity, hasMany, model, property} from '@loopback/repository';
 import {ApuestaJugador} from './apuesta-jugador.model';
+import {Contratacion} from './contratacion.model';
+import {Equipo} from './equipo.model';
+import {Estadistica} from './estadistica.model';
 
 @model()
 export class Jugador extends Entity {
@@ -48,10 +49,8 @@ export class Jugador extends Entity {
   @hasMany(() => ApuestaJugador)
   apuestasJugador: ApuestaJugador[];
 
-  @property({
-    type: 'number',
-  })
-  apuestaJugadorId?: number;
+  @hasMany(() => Estadistica)
+  estadisticas: Estadistica[];
 
   constructor(data?: Partial<Jugador>) {
     super(data);

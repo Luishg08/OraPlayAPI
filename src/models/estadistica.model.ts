@@ -1,4 +1,5 @@
-import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {belongsTo, Entity, model, property} from '@loopback/repository';
+import {Jugador} from './jugador.model';
 import {Partido} from './partido.model';
 
 @model()
@@ -25,6 +26,9 @@ export class Estadistica extends Entity {
   @belongsTo(() => Partido)
   partidoId: number;
 
+  @belongsTo(() => Jugador)
+  jugadorId: number;
+
   constructor(data?: Partial<Estadistica>) {
     super(data);
   }
@@ -35,3 +39,5 @@ export interface EstadisticaRelations {
 }
 
 export type EstadisticaWithRelations = Estadistica & EstadisticaRelations;
+
+

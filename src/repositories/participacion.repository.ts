@@ -5,7 +5,7 @@ import {Participacion, ParticipacionRelations} from '../models';
 
 export class ParticipacionRepository extends DefaultCrudRepository<
   Participacion,
-  typeof Participacion.prototype.idTorneoidEquipo,
+  typeof Participacion.prototype.idTorneo,
   ParticipacionRelations
 > {
   constructor(

@@ -75,10 +75,10 @@ export class Partido extends Entity {
   porcentajeEmpate?: number;
 
   @belongsTo(() => Torneo, {name: 'torneo'})
-  idTorneo: number;
+  torneoId: number;
 
   @belongsTo(() => Estadio, {name: 'estadio'})
-  idEstadio: number;
+  estadioId: number;
 
   @hasMany(() => Evento)
   eventos: Evento[];
@@ -92,15 +92,6 @@ export class Partido extends Entity {
   @belongsTo(() => Equipo, {name: 'equipoVisitante'})
   equipoVisitanteId: number;
 
-  @property({
-    type: 'number',
-  })
-  torneoId?: number;
-
-  @property({
-    type: 'number',
-  })
-  estadioId?: number;
 
   // Agregar hora con minutos de inicio y fin
   @property({
@@ -133,3 +124,4 @@ export interface PartidoRelations {
 }
 
 export type PartidoWithRelations = Partido & PartidoRelations;
+

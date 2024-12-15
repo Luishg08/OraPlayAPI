@@ -37,4 +37,7 @@ export * from './usuario-apuesta-jugador.controller';
 export * from './usuario-apuesta-marcador.controller';
 export * from './usuario-metodo-pago.controller';
 export * from './usuario-rol.controller';
-
+export * from './jugador-estadistica.controller';
+export * from './estadistica-jugador.controller';
+export * from './equipo-evento.controller';
+export * from './evento-equipo.controller';

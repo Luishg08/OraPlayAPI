@@ -39,3 +39,5 @@ export interface MetodoPagoRelations {
 }
 
 export type MetodoPagoWithRelations = MetodoPago & MetodoPagoRelations;
+
+

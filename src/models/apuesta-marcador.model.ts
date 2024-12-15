@@ -50,3 +50,6 @@ export interface ApuestaMarcadorRelations {
 }
 
 export type ApuestaMarcadorWithRelations = ApuestaMarcador & ApuestaMarcadorRelations;
+
+
+

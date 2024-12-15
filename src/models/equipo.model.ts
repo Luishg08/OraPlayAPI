@@ -6,6 +6,7 @@ import {Partido} from './partido.model';
 import {Tecnico} from './tecnico.model';
 import {Torneo} from './torneo.model';
 import {ApuestaEvento} from './apuesta-evento.model';
+import {Evento} from './evento.model';
 
 @model()
 export class Equipo extends Entity {
@@ -43,6 +44,9 @@ export class Equipo extends Entity {
   @hasMany(() => ApuestaEvento)
   apuestaEventosEquipo: ApuestaEvento[];
 
+  @hasMany(() => Evento)
+  eventos: Evento[];
+
   constructor(data?: Partial<Equipo>) {
     super(data);
   }
@@ -53,3 +57,5 @@ export interface EquipoRelations {
 }
 
 export type EquipoWithRelations = Equipo & EquipoRelations;
+
+

@@ -52,3 +52,6 @@ export interface TransaccionRelations {
 }
 
 export type TransaccionWithRelations = Transaccion & TransaccionRelations;
+
+
+
