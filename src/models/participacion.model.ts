@@ -25,3 +25,5 @@ export interface ParticipacionRelations {
 
 export type ParticipacionWithRelations = Participacion & ParticipacionRelations;
 
+
+

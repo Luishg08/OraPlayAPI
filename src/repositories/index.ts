@@ -10,6 +10,7 @@ export * from './jugador.repository';
 export * from './metodo-pago.repository';
 export * from './participacion.repository';
 export * from './partido.repository';
+export * from './puenteDBA.repository';
 export * from './rol.repository';
 export * from './tecnico.repository';
 export * from './torneo.repository';
