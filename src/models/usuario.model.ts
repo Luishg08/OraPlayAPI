@@ -1,9 +1,9 @@
 import {belongsTo, Entity, hasMany, model, property} from '@loopback/repository';
+import {ApuestaEvento} from './apuesta-evento.model';
+import {ApuestaJugador} from './apuesta-jugador.model';
+import {ApuestaMarcador} from './apuesta-marcador.model';
 import {MetodoPago} from './metodo-pago.model';
 import {Rol} from './rol.model';
-import {ApuestaEvento} from './apuesta-evento.model';
-import {ApuestaMarcador} from './apuesta-marcador.model';
-import {ApuestaJugador} from './apuesta-jugador.model';
 
 @model()
 export class Usuario extends Entity {
@@ -13,6 +13,18 @@ export class Usuario extends Entity {
     generated: true,
   })
   idUsuario?: number;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  nombre: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  apellido: string;
 
   @property({
     type: 'string',
