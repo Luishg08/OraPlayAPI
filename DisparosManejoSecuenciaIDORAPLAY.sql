@@ -17,7 +17,6 @@ CREATE OR REPLACE PACKAGE Pack_global AS
   Vid_Usuario NUMBER;
 END Pack_global;
 /
-
 -- Manejo id para APUESTAEVENTO
 CREATE OR REPLACE TRIGGER pk_sec_apuestaevento
 BEFORE INSERT ON APUESTAEVENTO
@@ -144,6 +143,26 @@ BEGIN
     Pack_global.Vid_Estadistica := Pack_global.Vid_Estadistica + 1;
 END pk_sec_insert_estadistica;
 /
+
+--Manejo id para JUGADOR
+CREATE OR REPLACE TRIGGER pk_sec_jugador
+BEFORE INSERT ON JUGADOR
+BEGIN
+    SELECT NVL(MAX(idJugador)+1,1)
+    INTO Pack_global.Vid_Jugador
+    FROM JUGADOR;
+END pk_sec_jugador;
+/
+
+CREATE OR REPLACE TRIGGER pk_sec_insert_jugador
+BEFORE INSERT ON JUGADOR
+FOR EACH ROW
+BEGIN
+    :new.idJugador := Pack_global.Vid_jugador;
+    Pack_global.Vid_jugador := Pack_global.Vid_jugador + 1;
+END pk_sec_insert_jugador;
+/
+
 -- Manejo id para EVENTO
 CREATE OR REPLACE TRIGGER pk_sec_evento
 BEFORE INSERT ON EVENTO

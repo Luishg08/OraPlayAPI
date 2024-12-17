@@ -1,0 +1,13 @@
+-- Crear un disparo que garantice que un equipo no sobrepase su cantidad de jugadores (Al insertar una contratación)
+-- Disparo que garantice que un jugador no puede estar en un equipo mientras su contrato esté activo
+-- Disparo que garantice que no se le agende a un equipo un partido el mismo día
+-- Disparo que garantice que un equipo no puede estar más de una vez registrado en el mismo torneo
+-- Disparo que garantice que un usuario no puede hacer más de 7 apuestas de un mismo partido
+-- Disparo que garantice que no se podrán hacer apuestas una vez que haya iniciado el partido
+-- Disparo que garantice que si dos equipos van a jugar un partido deben participar en el mismo torneo
+-- Disparo que recalcule la posible ganancia al hacer una apuesta por marcador 
+-- Disparo que garantice que un técnico no puede serlo de más de un equipo
+-- Procedimiento almacenado para obtener todos los partidos en curso y generar eventos aleatorios
+-- Procedimiento para cambiar de estado de un partido PENDIENTE a EN CURSO o FINALIZADO
+-- Procedimiento que obtenga todos los partidos del dia de hoy finalizados y verifique si fue un empate o no
+-- Procedimiento que obtenga todos los partidos finalizados y una vez que hayan terminado se le haga la respectiva transacción a los jugadores que apostaron (Tomando en cuenta los diferentes tipos de apuesta)

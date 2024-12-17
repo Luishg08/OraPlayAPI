@@ -7,7 +7,7 @@ export class PuenteDBARepository {
   ) {}
 
   async ejecutarProcedimientoTemporal(): Promise<void> {
-    const sql = `BEGIN pruebaTemporal; END;`;
+    const sql = `DELETE FROM TEMPORAL`;
     await this.dataSource.execute(sql); // Ejecución del procedimiento
   }
 }

@@ -92,18 +92,6 @@ export class Partido extends Entity {
   @belongsTo(() => Equipo, {name: 'equipoVisitante'})
   equipoVisitanteId: number;
 
-
-  // Agregar hora con minutos de inicio y fin
-  @property({
-    type: 'string',
-  })
-  horaInicio?: string;
-
-  @property({
-    type: 'string',
-  })
-  horaFin?: string;
-
   @hasMany(() => ApuestaEvento)
   apuestasEvento: ApuestaEvento[];
 
