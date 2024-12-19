@@ -147,58 +147,56 @@ export class UsuarioController {
   async deleteById(@param.path.number('id') id: number): Promise<void> {
     await this.usuarioRepository.deleteById(id);
   }
-  @post('/usuarios/verificar')
+
+  @post('/usuario')
   @response(200, {
-    description: 'Verificar si un usuario existe',
+    description: 'Usuario creado exitosamente',
     content: {'application/json': {schema: {type: 'object'}}},
   })
-  async verificarUsuario(
+  async create1(
     @requestBody({
       content: {
         'application/json': {
           schema: {
             type: 'object',
-            required: ['correo', 'contraseña'],
+            required: ['nombre', 'apellido', 'correo', 'password', 'telefono'],
             properties: {
+              nombre: {type: 'string'},
+              apellido: {type: 'string'},
               correo: {type: 'string', format: 'email'},
-              contraseña: {type: 'string'},
+              password: {type: 'string'},
+              telefono: {type: 'string'},
             },
           },
         },
       },
     })
-    credentials: {correo: string; contraseña: string},
+    usuarioData: {
+      nombre: string;
+      apellido: string;
+      correo: string;
+      password: string;
+      telefono?: string;
+    },
   ): Promise<object> {
-    const {correo, contraseña} = credentials;
-
     try {
-      // Llamada al procedimiento almacenado
+      // Insertar datos directamente en la base de datos
       const result = await this.usuarioRepository.dataSource.execute(
-        `BEGIN VERIFICAR_USUARIO1(:1, :2, :3); END;`,
-        [correo, contraseña, {dir: 3003, type: 'NUMBER'}], // Array de parámetros
+        `INSERT INTO USUARIO (NOMBRE, APELLIDO, CORREO, PASSWORD, TELEFONO)
+      VALUES (:nombre, :apellido, :correo, :password, :telefono)`,
+        {
+          nombre: usuarioData.nombre,
+          apellido: usuarioData.apellido,
+          correo: usuarioData.correo,
+          password: usuarioData.password,
+          telefono: usuarioData.telefono
+        },
       );
 
-      const idUsuario = result[2]; // El tercer parámetro es el idUsuario
-
-      if (idUsuario === -1) {
-        return {
-          valido: false,
-          mensaje: 'Correo o contraseña incorrectos',
-        };
-      }
-
-      return {
-        valido: true,
-        mensaje: 'Usuario válido',
-        idUsuario: idUsuario, // Retorna el id del usuario si es válido
-      };
+      return {message: 'Usuario creado exitosamente', result};
     } catch (error) {
-      console.error('Error al verificar usuario:', error); // Agrega más información sobre el error
-      return {
-        valido: false,
-        mensaje: 'Error al verificar el usuario',
-        error: error.message || error, // Agrega el mensaje de error específico
-      };
+      console.error('Error al insertar usuario:', error);
+      throw new Error('Error al insertar usuario');
     }
   }
 }
