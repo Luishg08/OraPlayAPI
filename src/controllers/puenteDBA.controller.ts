@@ -43,6 +43,9 @@ export class PuenteDBAController {
     // const resultadoJSON = JSON.parse(resultado);
     // //obtener el valor de "resultado" del JSON resultado;
     let usuario = this.usuarioRepository.findById(parseInt(resultado));
+    if (usuario == null) {
+      response.status(404);
+    }
     return usuario;
   }
 }
