@@ -1,12 +1,14 @@
 // filepath: /c:/Users/luish/OneDrive/Documentos/Bases De Datos II/OraPlay/apioraplay/src/controllers/puenteDBA.controller.ts
 import {inject} from '@loopback/core';
 import {post, requestBody, Response, RestBindings} from '@loopback/rest';
-import {PuenteDBARepository} from '../repositories';
+import {PuenteDBARepository, UsuarioRepository} from '../repositories';
 
 export class PuenteDBAController {
   constructor(
     @inject('repositories.PuenteDBARepository')
     private puenteDBARepository: PuenteDBARepository,
+    @inject('repositories.UsuarioRepository')
+    private usuarioRepository: UsuarioRepository,
   ) {}
 
   @post('/verificar-usuario', {
@@ -38,6 +40,9 @@ export class PuenteDBAController {
     const {email} = body;
     const {contraseña} = body;
     const resultado = await this.puenteDBARepository.ejecutarProcedimientoVerificarUsuario(email, contraseña);
-    return {resultado};
+    // const resultadoJSON = JSON.parse(resultado);
+    // //obtener el valor de "resultado" del JSON resultado;
+    let usuario = this.usuarioRepository.findById(parseInt(resultado));
+    return usuario;
   }
 }
