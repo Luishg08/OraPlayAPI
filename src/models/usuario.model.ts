@@ -55,12 +55,6 @@ export class Usuario extends Entity {
   })
   fechaRegistro: string;
 
-  @property({
-    type: 'number',
-    required: false,
-  })
-  saldo: string;
-
   @belongsTo(() => Rol)
   rolId: number;
 
