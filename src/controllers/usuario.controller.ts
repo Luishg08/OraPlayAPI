@@ -50,13 +50,13 @@ export class UsuarioController {
       const result = await this.usuarioRepository.dataSource.execute(
         `INSERT INTO USUARIO (NOMBRE, APELLIDO, CORREO, PASSWORD, TELEFONO)
       VALUES (:nombre, :apellido, :correo, :password, :telefono)`,
-      [
-        usuarioData.nombre,
-        usuarioData.apellido,
-        usuarioData.correo,
-        usuarioData.password,
-        usuarioData.telefono,
-      ],
+        [
+          usuarioData.nombre,
+          usuarioData.apellido,
+          usuarioData.correo,
+          usuarioData.password,
+          usuarioData.telefono,
+        ],
       );
 
       return {message: 'Usuario creado exitosamente', result};
