@@ -7,13 +7,13 @@ import {
   Where,
 } from '@loopback/repository';
 import {
-  post,
-  param,
+  del,
   get,
   getModelSchemaRef,
+  param,
   patch,
+  post,
   put,
-  del,
   requestBody,
   response,
 } from '@loopback/rest';
@@ -23,8 +23,8 @@ import {UsuarioRepository} from '../repositories';
 export class UsuarioController {
   constructor(
     @repository(UsuarioRepository)
-    public usuarioRepository : UsuarioRepository,
-  ) {}
+    public usuarioRepository: UsuarioRepository,
+  ) { }
 
   @post('/usuarios')
   @response(200, {
@@ -37,7 +37,7 @@ export class UsuarioController {
         'application/json': {
           schema: getModelSchemaRef(Usuario, {
             title: 'NewUsuario',
-            
+
           }),
         },
       },
@@ -146,5 +146,59 @@ export class UsuarioController {
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
     await this.usuarioRepository.deleteById(id);
+  }
+  @post('/usuarios/verificar')
+  @response(200, {
+    description: 'Verificar si un usuario existe',
+    content: {'application/json': {schema: {type: 'object'}}},
+  })
+  async verificarUsuario(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            required: ['correo', 'contraseña'],
+            properties: {
+              correo: {type: 'string', format: 'email'},
+              contraseña: {type: 'string'},
+            },
+          },
+        },
+      },
+    })
+    credentials: {correo: string; contraseña: string},
+  ): Promise<object> {
+    const {correo, contraseña} = credentials;
+
+    try {
+      // Llamada al procedimiento almacenado
+      const result = await this.usuarioRepository.dataSource.execute(
+        `BEGIN VERIFICAR_USUARIO1(:1, :2, :3); END;`,
+        [correo, contraseña, {dir: 3003, type: 'NUMBER'}], // Array de parámetros
+      );
+
+      const idUsuario = result[2]; // El tercer parámetro es el idUsuario
+
+      if (idUsuario === -1) {
+        return {
+          valido: false,
+          mensaje: 'Correo o contraseña incorrectos',
+        };
+      }
+
+      return {
+        valido: true,
+        mensaje: 'Usuario válido',
+        idUsuario: idUsuario, // Retorna el id del usuario si es válido
+      };
+    } catch (error) {
+      console.error('Error al verificar usuario:', error); // Agrega más información sobre el error
+      return {
+        valido: false,
+        mensaje: 'Error al verificar el usuario',
+        error: error.message || error, // Agrega el mensaje de error específico
+      };
+    }
   }
 }
