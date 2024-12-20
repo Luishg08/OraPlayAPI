@@ -1,6 +1,5 @@
 import {belongsTo, Entity, model, property} from '@loopback/repository';
 import {Equipo} from './equipo.model';
-import {Evento} from './evento.model';
 import {Partido} from './partido.model';
 import {Usuario} from './usuario.model';
 
@@ -25,14 +24,17 @@ export class ApuestaEvento extends Entity {
   })
   posibleGanancia: number;
 
+  @property({
+    type: 'string',
+    required: true,
+  })
+  nombreEvento: string;
+
   @belongsTo(() => Usuario)
   usuarioId: number;
 
   @belongsTo(() => Partido)
   partidoId: number;
-
-  @belongsTo(() => Evento)
-  eventoId: number;
 
   @belongsTo(() => Equipo)
   equipoId: number;

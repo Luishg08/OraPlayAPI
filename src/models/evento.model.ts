@@ -1,7 +1,6 @@
-import {Entity, model, property, belongsTo, hasMany} from '@loopback/repository';
-import {Partido} from './partido.model';
-import {ApuestaEvento} from './apuesta-evento.model';
+import {belongsTo, Entity, model, property} from '@loopback/repository';
 import {Equipo} from './equipo.model';
+import {Partido} from './partido.model';
 
 @model()
 export class Evento extends Entity {
@@ -26,9 +25,6 @@ export class Evento extends Entity {
 
   @belongsTo(() => Partido)
   partidoId: number;
-
-  @hasMany(() => ApuestaEvento)
-  apuestasEvento: ApuestaEvento[];
 
   @belongsTo(() => Equipo)
   equipoId: number;

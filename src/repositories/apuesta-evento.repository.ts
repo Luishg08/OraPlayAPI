@@ -1,11 +1,11 @@
-import {inject, Getter} from '@loopback/core';
-import {DefaultCrudRepository, repository, BelongsToAccessor} from '@loopback/repository';
+import {Getter, inject} from '@loopback/core';
+import {BelongsToAccessor, DefaultCrudRepository, repository} from '@loopback/repository';
 import {OraplaysqlDataSource} from '../datasources';
-import {ApuestaEvento, ApuestaEventoRelations, Usuario, Partido, Evento, Equipo} from '../models';
-import {UsuarioRepository} from './usuario.repository';
-import {PartidoRepository} from './partido.repository';
-import {EventoRepository} from './evento.repository';
+import {ApuestaEvento, ApuestaEventoRelations, Equipo, Partido, Usuario} from '../models';
 import {EquipoRepository} from './equipo.repository';
+import {EventoRepository} from './evento.repository';
+import {PartidoRepository} from './partido.repository';
+import {UsuarioRepository} from './usuario.repository';
 
 export class ApuestaEventoRepository extends DefaultCrudRepository<
   ApuestaEvento,
@@ -17,8 +17,6 @@ export class ApuestaEventoRepository extends DefaultCrudRepository<
 
   public readonly partido: BelongsToAccessor<Partido, typeof ApuestaEvento.prototype.idApuestaEvento>;
 
-  public readonly evento: BelongsToAccessor<Evento, typeof ApuestaEvento.prototype.idApuestaEvento>;
-
   public readonly equipo: BelongsToAccessor<Equipo, typeof ApuestaEvento.prototype.idApuestaEvento>;
 
   constructor(
@@ -27,8 +25,6 @@ export class ApuestaEventoRepository extends DefaultCrudRepository<
     super(ApuestaEvento, dataSource);
     this.equipo = this.createBelongsToAccessorFor('equipo', equipoRepositoryGetter,);
     this.registerInclusionResolver('equipo', this.equipo.inclusionResolver);
-    this.evento = this.createBelongsToAccessorFor('evento', eventoRepositoryGetter,);
-    this.registerInclusionResolver('evento', this.evento.inclusionResolver);
     this.partido = this.createBelongsToAccessorFor('partido', partidoRepositoryGetter,);
     this.registerInclusionResolver('partido', this.partido.inclusionResolver);
     this.usuario = this.createBelongsToAccessorFor('usuario', usuarioRepositoryGetter,);
