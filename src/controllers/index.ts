@@ -40,3 +40,4 @@ export * from './usuario-apuesta-marcador.controller';
 export * from './usuario-metodo-pago.controller';
 export * from './usuario-rol.controller';
 
+export * from './partido.controller';

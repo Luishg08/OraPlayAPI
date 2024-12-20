@@ -47,3 +47,33 @@ VALUES (2, 2, 1, 2000, 4000, 2, 2);
 
 INSERT INTO APUESTAMARCADOR (IDAPUESTAMARCADOR, GOLESEQUIPOLOCAL, GOLESEQUIPOVISITANTE, CANTIDADAPOSTADA, POSIBLEGANANCIA, USUARIOID, PARTIDOID)
 VALUES (3, 3, 2, 3000, 6000, 3, 3);
+
+CREATE OR REPLACE PACKAGE Pack_partidos AS
+TYPE idspartidos IS TABLE OF NUMBER
+INDEX BY BINARY_INTEGER;
+V_idsCurso idspartidos;
+PROCEDURE listar_en_curso(P_partidos OUT idspartidos);
+END Pack_partidos;
+
+
+CREATE OR REPLACE PACKAGE BODY Pack_partidos AS
+    PROCEDURE listar_en_curso(P_partidos OUT idspartidos) AS
+        CURSOR MIC1 IS  
+            SELECT IDPARTIDO
+            FROM PARTIDO 
+            WHERE SYSDATE 
+            BETWEEN TO_DATE(FECHAINICIO, 'YYYY-MM-DD HH24:MI:SS') 
+                AND TO_DATE(FECHAFIN, 'YYYY-MM-DD HH24:MI:SS');
+    BEGIN
+        -- Limpiar la colección antes de insertar nuevos valores
+        P_partidos.DELETE;
+
+        -- Iterar sobre el cursor para insertar los IDs en la colección
+        FOR partido IN MIC1 LOOP
+            P_partidos(P_partidos.COUNT) := partido.IDPARTIDO; -- Insertar el ID
+        END LOOP;
+    END listar_en_curso;
+END Pack_partidos;
+/
+SET SERVEROUTPUT ON;
+

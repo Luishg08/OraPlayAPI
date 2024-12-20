@@ -181,7 +181,7 @@ export class MetodoPagoControllerController {
       console.log(metodosPago)
       // Verificar si se encontraron métodos de pago
       if (metodosPago.length === 0) {
-        throw new Error('No se encontraron métodos de pago para este usuario');
+        return [];
       }
 
       //Devolver los métodos de pago asociados al usuario
