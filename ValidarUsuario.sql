@@ -52,28 +52,34 @@ CREATE OR REPLACE PACKAGE Pack_partidos AS
 TYPE idspartidos IS TABLE OF NUMBER
 INDEX BY BINARY_INTEGER;
 V_idsCurso idspartidos;
-PROCEDURE listar_en_curso(P_partidos OUT idspartidos);
+PROCEDURE listar_en_curso(P_partidos OUT SYS_REFCURSOR);
+PROCEDURE listar_pendientes(P_partidos OUT SYS_REFCURSOR);
 END Pack_partidos;
 
 
 CREATE OR REPLACE PACKAGE BODY Pack_partidos AS
-    PROCEDURE listar_en_curso(P_partidos OUT idspartidos) AS
-        CURSOR MIC1 IS  
-            SELECT IDPARTIDO
-            FROM PARTIDO 
-            WHERE SYSDATE 
-            BETWEEN TO_DATE(FECHAINICIO, 'YYYY-MM-DD HH24:MI:SS') 
-                AND TO_DATE(FECHAFIN, 'YYYY-MM-DD HH24:MI:SS');
+    PROCEDURE listar_en_curso(P_partidos OUT SYS_REFCURSOR) AS
     BEGIN
-        -- Limpiar la colección antes de insertar nuevos valores
-        P_partidos.DELETE;
-
-        -- Iterar sobre el cursor para insertar los IDs en la colección
-        FOR partido IN MIC1 LOOP
-            P_partidos(P_partidos.COUNT) := partido.IDPARTIDO; -- Insertar el ID
-        END LOOP;
+        OPEN P_partidos FOR
+        SELECT IDPARTIDO
+        FROM PARTIDO 
+        WHERE SYSDATE 
+        BETWEEN TO_DATE(FECHAINICIO, 'YYYY-MM-DD HH24:MI:SS') 
+            AND TO_DATE(FECHAFIN, 'YYYY-MM-DD HH24:MI:SS');
     END listar_en_curso;
+ PROCEDURE listar_pendientes(P_partidos OUT SYS_REFCURSOR) AS
+    BEGIN
+        OPEN P_partidos FOR
+        SELECT IDPARTIDO
+        FROM PARTIDO 
+        WHERE SYSDATE 
+        <= TO_DATE(FECHAINICIO, 'YYYY-MM-DD HH24:MI:SS') 
+        AND ESTADO  = 'PENDIENTE';
+    END listar_pendientes;
 END Pack_partidos;
 /
+
 SET SERVEROUTPUT ON;
+
+SELECT * FROM USUARIO;
 
