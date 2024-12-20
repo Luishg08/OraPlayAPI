@@ -42,3 +42,5 @@ export * from './usuario-rol.controller';
 
 export * from './partido.controller';
 export * from './apuestajugador.controller';
+export * from './apuesta-evento.controller';
+export * from './apuestamarcador.controller';

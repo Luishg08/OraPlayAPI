@@ -170,5 +170,43 @@ export class PartidoController {
       throw new Error('Error al obtener los jugadores por partido');
     }
   }
+@get('/equipos-por-partido/{idPartido}', {
+    responses: {
+      '200': {
+        description: 'Array of JugadorModel instances for a given partido',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'array',
+              items: {type: 'object'},
+            },
+          },
+        },
+      },
+    },
+  })
+  async equiposPorPartido(
+    @param.path.number('idPartido') idPartido: number,
+  ): Promise<any[]> {
+    try {
+      // Obtener el partido por ID
+      const partido: any = await this.partidoRepository.findById(idPartido, {
+        include: [
+          {relation: 'equipoLocal'},
+          {relation: 'equipoVisitante'},
+        ],
+      });
 
+      // Extraer jugadores de ambos equipos
+      const equipos = {
+        equipoLocal: partido.equipoLocal,
+        equipoVisitante: partido.equipoVisitante,
+      };
+
+      return [equipos];
+        } catch (error) {
+      console.error('Error al obtener los equipos por partido:', error);
+      throw new Error('Error al obtener los equipos por partido');
+    }
+  }
 }
