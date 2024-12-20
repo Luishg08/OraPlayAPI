@@ -1,10 +1,8 @@
-import {inject} from '@loopback/core';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
-  juggler,
   repository,
   Where
 } from '@loopback/repository';
@@ -25,8 +23,7 @@ import {MetodoPagoRepository} from '../repositories';
 export class MetodoPagoControllerController {
   constructor(
     @repository(MetodoPagoRepository)
-    public metodoPagoRepository: MetodoPagoRepository,
-    @inject('datasources.db') private dataSource: juggler.DataSource,
+    public metodoPagoRepository: MetodoPagoRepository
   ) { }
 
   @post('/metodo-pagos')
@@ -170,9 +167,10 @@ export class MetodoPagoControllerController {
     },
   })
   async findByUsuarioId(
-    @param.path.number('usuarioId') usuarioId: number, // Obtener usuarioId desde la URL
+    @param.path.number('usuarioId') usuarioId: string, // Obtener usuarioId desde la URL
   ): Promise<any[]> {
     try {
+      console.log(usuarioId) + "usuarioId"
       // Consultar los métodos de pago asociados al usuario desde la base de datos
       const metodosPago = await this.metodoPagoRepository.dataSource.execute(
         `SELECT NOMBREMETODO, NUMEROCUENTA
@@ -180,13 +178,13 @@ export class MetodoPagoControllerController {
        WHERE USUARIOID = :usuarioId`,
         [usuarioId], // Pasar usuarioId como parámetro de la consulta
       );
-
+      console.log(metodosPago)
       // Verificar si se encontraron métodos de pago
       if (metodosPago.length === 0) {
         throw new Error('No se encontraron métodos de pago para este usuario');
       }
 
-      // Devolver los métodos de pago asociados al usuario
+      //Devolver los métodos de pago asociados al usuario
       return metodosPago.map((metodo: any) => ({
         nombreMetodo: metodo.NOMBREMETODO,
         numeroCuenta: metodo.NUMEROCUENTA,
