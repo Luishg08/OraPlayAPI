@@ -9,7 +9,8 @@ export class PuenteDBAController {
     private puenteDBARepository: PuenteDBARepository,
     @inject('repositories.UsuarioRepository')
     private usuarioRepository: UsuarioRepository,
-  ) {}
+
+  ) { }
 
   @post('/verificar-usuario', {
     responses: {
