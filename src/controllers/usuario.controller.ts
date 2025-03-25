@@ -1,150 +1,119 @@
 import {
-  Count,
-  CountSchema,
-  Filter,
-  FilterExcludingWhere,
-  repository,
-  Where,
+  repository
 } from '@loopback/repository';
 import {
-  post,
-  param,
   get,
-  getModelSchemaRef,
-  patch,
-  put,
-  del,
+  param,
+  post,
   requestBody,
-  response,
+  response
 } from '@loopback/rest';
-import {Usuario} from '../models';
 import {UsuarioRepository} from '../repositories';
 
 export class UsuarioController {
   constructor(
     @repository(UsuarioRepository)
-    public usuarioRepository : UsuarioRepository,
-  ) {}
+    public usuarioRepository: UsuarioRepository,
+  ) { }
 
-  @post('/usuarios')
+  @post('/usuario')
   @response(200, {
-    description: 'Usuario model instance',
-    content: {'application/json': {schema: getModelSchemaRef(Usuario)}},
+    description: 'Usuario creado exitosamente',
+    content: {'application/json': {schema: {type: 'object'}}},
   })
-  async create(
+  async create1(
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Usuario, {
-            title: 'NewUsuario',
-            
-          }),
+          schema: {
+            type: 'object',
+            required: ['nombre', 'apellido', 'correo', 'password', 'telefono'],
+            properties: {
+              nombre: {type: 'string'},
+              apellido: {type: 'string'},
+              correo: {type: 'string', format: 'email'},
+              password: {type: 'string'},
+              telefono: {type: 'string'},
+            },
+          },
         },
       },
     })
-    usuario: Usuario,
-  ): Promise<Usuario> {
-    return this.usuarioRepository.create(usuario);
+    usuarioData: {
+      nombre: string;
+      apellido: string;
+      correo: string;
+      password: string;
+      telefono?: string;
+    },
+  ): Promise<object> {
+    try {
+      // Insertar datos directamente en la base de datos
+      const result = await this.usuarioRepository.dataSource.execute(
+        `INSERT INTO USUARIO (NOMBRE, APELLIDO, CORREO, PASSWORD, TELEFONO)
+      VALUES (:nombre, :apellido, :correo, :password, :telefono)`,
+        [
+          usuarioData.nombre,
+          usuarioData.apellido,
+          usuarioData.correo,
+          usuarioData.password,
+          usuarioData.telefono,
+        ],
+      );
+
+      return {message: 'Usuario creado exitosamente', result};
+    } catch (error) {
+      console.error('Error al insertar usuario:', error);
+      throw new Error('Error al insertar usuario');
+    }
   }
 
-  @get('/usuarios/count')
+  @get('/usuario/{id}')
   @response(200, {
-    description: 'Usuario model count',
-    content: {'application/json': {schema: CountSchema}},
-  })
-  async count(
-    @param.where(Usuario) where?: Where<Usuario>,
-  ): Promise<Count> {
-    return this.usuarioRepository.count(where);
-  }
-
-  @get('/usuarios')
-  @response(200, {
-    description: 'Array of Usuario model instances',
+    description: 'Datos del usuario obtenidos exitosamente',
     content: {
       'application/json': {
         schema: {
-          type: 'array',
-          items: getModelSchemaRef(Usuario, {includeRelations: true}),
+          type: 'object',
+          properties: {
+            nombre: {type: 'string'},
+            apellido: {type: 'string'},
+            correo: {type: 'string', format: 'email'},
+            telefono: {type: 'string'},
+            saldo: {type: 'number'},
+          },
         },
       },
     },
   })
-  async find(
-    @param.filter(Usuario) filter?: Filter<Usuario>,
-  ): Promise<Usuario[]> {
-    return this.usuarioRepository.find(filter);
+  async getUserData(
+    @param.path.number('id') id: number,  // Obtener ID desde la URL
+  ): Promise<object> {
+    try {
+      // Consultar datos del usuario usando su ID
+      const userData = await this.usuarioRepository.dataSource.execute(
+        `SELECT NOMBRE, APELLIDO, CORREO, TELEFONO, SALDO
+        FROM USUARIO
+        WHERE IDUSUARIO = :id`,
+        [id],
+      );
+
+      // Verificar si el usuario existe
+      if (userData.length === 0) {
+        throw new Error('Usuario no encontrado');
+      }
+
+      return {
+        nombre: userData[0].NOMBRE,
+        apellido: userData[0].APELLIDO,
+        correo: userData[0].CORREO,
+        telefono: userData[0].TELEFONO,
+        saldo: userData[0].SALDO,
+      };
+    } catch (error) {
+      console.error('Error al obtener los datos del usuario:', error);
+      throw new Error('Error al obtener los datos del usuario');
+    }
   }
 
-  @patch('/usuarios')
-  @response(200, {
-    description: 'Usuario PATCH success count',
-    content: {'application/json': {schema: CountSchema}},
-  })
-  async updateAll(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Usuario, {partial: true}),
-        },
-      },
-    })
-    usuario: Usuario,
-    @param.where(Usuario) where?: Where<Usuario>,
-  ): Promise<Count> {
-    return this.usuarioRepository.updateAll(usuario, where);
-  }
-
-  @get('/usuarios/{id}')
-  @response(200, {
-    description: 'Usuario model instance',
-    content: {
-      'application/json': {
-        schema: getModelSchemaRef(Usuario, {includeRelations: true}),
-      },
-    },
-  })
-  async findById(
-    @param.path.number('id') id: number,
-    @param.filter(Usuario, {exclude: 'where'}) filter?: FilterExcludingWhere<Usuario>
-  ): Promise<Usuario> {
-    return this.usuarioRepository.findById(id, filter);
-  }
-
-  @patch('/usuarios/{id}')
-  @response(204, {
-    description: 'Usuario PATCH success',
-  })
-  async updateById(
-    @param.path.number('id') id: number,
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Usuario, {partial: true}),
-        },
-      },
-    })
-    usuario: Usuario,
-  ): Promise<void> {
-    await this.usuarioRepository.updateById(id, usuario);
-  }
-
-  @put('/usuarios/{id}')
-  @response(204, {
-    description: 'Usuario PUT success',
-  })
-  async replaceById(
-    @param.path.number('id') id: number,
-    @requestBody() usuario: Usuario,
-  ): Promise<void> {
-    await this.usuarioRepository.replaceById(id, usuario);
-  }
-
-  @del('/usuarios/{id}')
-  @response(204, {
-    description: 'Usuario DELETE success',
-  })
-  async deleteById(@param.path.number('id') id: number): Promise<void> {
-    await this.usuarioRepository.deleteById(id);
-  }
 }

@@ -1,37 +1,52 @@
+// filepath: /c:/Users/luish/OneDrive/Documentos/Bases De Datos II/OraPlay/apioraplay/src/controllers/puenteDBA.controller.ts
 import {inject} from '@loopback/core';
-import {OraplaysqlDataSource} from '../datasources';
+import {post, requestBody, Response, RestBindings} from '@loopback/rest';
+import {PuenteDBARepository, UsuarioRepository} from '../repositories';
 
-export class PuenteDBARepository {
+export class PuenteDBAController {
   constructor(
-    @inject('datasources.oraplaysql') protected dataSource: OraplaysqlDataSource,
-  ) {}
+    @inject('repositories.PuenteDBARepository')
+    private puenteDBARepository: PuenteDBARepository,
+    @inject('repositories.UsuarioRepository')
+    private usuarioRepository: UsuarioRepository,
 
-  async ejecutarProcedimientoTemporal(param1: string, param2: string): Promise<string> {
-    const sql = `BEGIN pruebaTemporal(:param1, :param2, :resultado); END;`;
+  ) { }
 
-    // Parámetros para el procedimiento almacenado
-    const params = [
-      {
-        dir: 3001,             // Código para BIND_IN (entrada)
-        type: 2001,            // Código para STRING
-        val: param1,           // Valor del primer parámetro
+  @post('/verificar-usuario', {
+    responses: {
+      '200': {
+        description: 'Ejecución del procedimiento Verificar usuario para logueo',
+        content: {'application/json': {schema: {type: 'object'}}},
       },
-      {
-        dir: 3001,             // Código para BIND_IN (entrada)
-        type: 2001,            // Código para STRING
-        val: param2,           // Valor del segundo parámetro
+    },
+  })
+  async ejecutarProcedimiento(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              email: {type: 'string'},
+              contraseña: {type: 'string'},
+            },
+            required: ['email', 'contraseña'],
+          },
+        },
       },
-      {
-        dir: 3002,             // Código para BIND_OUT (salida)
-        type: 2001,            // Código para STRING
-        maxSize: 2000,         // Tamaño máximo del buffer de salida
-      },
-    ];
-
-    // Ejecutar el procedimiento almacenado
-    const result = await this.dataSource.execute(sql, params);
-
-    // Retornar el valor del parámetro de salida
-    return result.outBinds[2]; // El índice 2 corresponde al parámetro de salida
+    })
+    body: {email: string, contraseña: string},
+    @inject(RestBindings.Http.RESPONSE) response: Response,
+  ): Promise<object> {
+    const {email} = body;
+    const {contraseña} = body;
+    const resultado = await this.puenteDBARepository.ejecutarProcedimientoVerificarUsuario(email, contraseña);
+    // const resultadoJSON = JSON.parse(resultado);
+    // //obtener el valor de "resultado" del JSON resultado;
+    let usuario = this.usuarioRepository.findById(parseInt(resultado));
+    if (usuario == null) {
+      response.status(404);
+    }
+    return usuario;
   }
 }

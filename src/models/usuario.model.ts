@@ -45,15 +45,21 @@ export class Usuario extends Entity {
 
   @property({
     type: 'boolean',
-    required: true,
+    required: false,
   })
   estado: boolean;
 
   @property({
     type: 'date',
-    required: true,
+    required: false,
   })
   fechaRegistro: string;
+
+  @property({
+    type: 'number',
+    required: false,
+  })
+  saldo: number;
 
   @belongsTo(() => Rol)
   rolId: number;

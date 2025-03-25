@@ -1,9 +1,9 @@
-import {inject, Getter} from '@loopback/core';
-import {DefaultCrudRepository, repository, BelongsToAccessor, HasManyRepositoryFactory} from '@loopback/repository';
+import {Getter, inject} from '@loopback/core';
+import {BelongsToAccessor, DefaultCrudRepository, HasManyRepositoryFactory, repository} from '@loopback/repository';
 import {OraplaysqlDataSource} from '../datasources';
-import {MetodoPago, MetodoPagoRelations, Usuario, Transaccion} from '../models';
-import {UsuarioRepository} from './usuario.repository';
+import {MetodoPago, MetodoPagoRelations, Transaccion, Usuario} from '../models';
 import {TransaccionRepository} from './transaccion.repository';
+import {UsuarioRepository} from './usuario.repository';
 
 export class MetodoPagoRepository extends DefaultCrudRepository<
   MetodoPago,
